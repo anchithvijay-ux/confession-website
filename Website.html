@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Something For You ❤️</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: lavenderblush;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+
+    h1 {
+        color: crimson;
+        font-size: 28px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    canvas {
+        width: min(90vw, 450px);
+        height: min(90vw, 450px);
+    }
+
+    .poem {
+        text-align: center;
+        color: crimson;
+        font-size: 19px;
+        font-weight: bold;
+        line-height: 1.8;
+        margin-top: 10px;
+        animation: appear 2s ease;
+    }
+
+    @keyframes appear {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .footer {
+        margin-top: 15px;
+        color: #d66b91;
+        font-size: 13px;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>Hey! This is for you.... ❤️</h1>
+
+<canvas id="heartCanvas" width="600" height="600"></canvas>
+
+<div class="poem">
+    <p>Roses are red.</p>
+    <p>Violets are blue.</p>
+    <p>I like pink coffe.</p>
+    <p>Do you do too?</p>
+</div>
+
+<div class="footer">Made with ❤️ and a little bit of Python inspiration.</div>
+
+<script>
+const canvas = document.getElementById("heartCanvas");
+const ctx = canvas.getContext("2d");
+
+const colors = [
+    "red",
+    "deeppink",
+    "lightpink",
+    "midnightblue",
+    "blue",
+    "dodgerblue",
+    "deepskyblue"
+];
+
+let progress = 0;
+
+function drawHeart(cx, cy, scale, color, animation) {
+
+    ctx.beginPath();
+
+    for (let angle = 0; angle <= Math.PI * 2 + 0.02; angle += 0.02) {
+
+        const x = 16 * Math.pow(Math.sin(angle), 3);
+
+        const y = 13 * Math.cos(angle)
+                - 5 * Math.cos(2 * angle)
+                - 2 * Math.cos(3 * angle)
+                - Math.cos(4 * angle);
+
+        const px = cx + x * scale * animation;
+        const py = cy - y * scale * animation;
+
+        if (angle === 0) {
+            ctx.moveTo(px, py);
+        } else {
+            ctx.lineTo(px, py);
+        }
+    }
+
+    ctx.closePath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+}
+
+function animate() {
+
+    ctx.clearRect(0, 0, 600, 600);
+
+    progress += 0.025;
+
+    for (let i = 1; i <= 13; i++) {
+
+        const scale = i * 0.85;
+
+        const pulse = 1 + Math.sin(progress - i * 0.12) * 0.025;
+
+        drawHeart(
+            300,
+            290 + i * 4,
+            scale,
+            colors[i % colors.length],
+            pulse
+        );
+    }
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
